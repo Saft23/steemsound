@@ -1,7 +1,10 @@
 <html>
   <head>
-      <link href="fine-uploader-new.css" rel="stylesheet" type="text/css"/>
+	<link href="fine-uploader-new.css" rel="stylesheet" type="text/css"/>
+	<script src="http://code.jquery.com/jquery-latest.min.js"
+        type="text/javascript"></script>
   </head>
+
   <body>
 
     <!-- The element where Fine Uploader will exist. -->
@@ -71,33 +74,47 @@
     </script>
 
     <script>
-        var uploader = new qq.FineUploader({
-            element: document.getElementById("fine-uploader"),
-            debug:true,
-            request: {
-                endpoint: "endpoint.php"
-            },
-            deleteFile: {
-                enabled: true,
-                endpoint: "endpoint.php"
-            },
-            chunking: {
-                enabled: true,
-                concurrent: {
-                    enabled: true
-                },
-                success: {
-                    endpoint: "endpoint.php?done"
-                }
-            },
-            resume: {
-                enabled: true
-            },
-            retry: {
-                enableAuto: true,
-                showButton: true
-            }
-        });
+var uploader = new qq.FineUploader({
+	element: document.getElementById("fine-uploader"),
+	debug:true,
+		request: {
+		endpoint: "endpoint.php"
+	},
+	deleteFile: {
+		enabled: true,
+		endpoint: "endpoint.php"
+	},
+	chunking: {
+		enabled: true,
+	concurrent: {
+		enabled: true
+	},
+	success: {
+		endpoint: "endpoint.php?done"
+	}
+	},
+	resume: {
+		enabled: true
+	},
+	retry: {
+		enableAuto: true,
+		showButton: true
+	},
+	callbacks: {
+		onComplete: function(id, name, response, xhr){
+			console.log("COMPLETED: " + name);
+			console.log("COMPLETED: ", response);
+			var uuid = response['uuid'];
+			console.log("uuid: "+ uuid);
+			$.get("gethash.php", {name : uuid}, function(data, status){
+				console.log("data: " + data);
+				console.log("status: " + status);
+
+			});
+		}
+	}
+
+	});
 
     </script>
   </body>
