@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Steem Connect Login</title>
+        <script type = "text/javascript" src="steemconnect.min.js"></script>
+        <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+        <script src="steem.min.js"></script>
+        <script>
+            steemconnect.init({
+                app: 'caroot',
+                //callbackURL: 'http://localhost'
+                callbackURL: 'http://95.80.56.96:2329/projects/steemit/test/login.html'
+            });
+            var isAuth = false;
+            var loginURL = steemconnect.getLoginURL();
+
+            steemconnect.isAuthenticated(function(err, result) {
+                if (!err && result.isAuthenticated) {
+                    isAuth = true;
+                    var username = result.username;
+                    console.log(result);
+                    //do more
+                    console.log("logged in user: " + username);
+
+                    $("#username").html("Logged in as " + username);
+                    var tag = "test-development";
+                    //$("#connect").html("obj:" + steemconnect);
+                    console.log(steemconnect);
+                    var jsondata = {tags: [tag], app:'caroot'};
+                    console.log(jsondata);
+                    var permlink_parent = 'popular-google-chrome-extension-caught-mining-cryptocurrency-on-thousands-of-computers';
+                    //steemconnect.comment('saft', permlink_parent, username, 'development-testing-222221233132132132132', 'testing JS lib', 'this is a test', jsondata, function(err, res){
+                     //   console.log(err,res);
+                    //});
+                    steemconnect.comment('', tag, username, 'development-testing-2222132', 'testing', 'test', jsondata, function(err, res){
+                        console.log(err,res);
+                    });
+                    //steemconnect.comment('', tag, username, 'development-testing-2222132', 'testing JS lib', 'this is a test', jsondata, function(err, res){
+                        //console.log(err,res);
+                    //});
+
+                }
+                else {
+                    console.log(err);
+                }
+            });
+
+            function redirect() {
+                window.location = loginURL;
+            }
+        </script>
+    </head>
+    <body>
+
+        <p id = "username">Not logged in</p>
+        <p id = "connect">Not logged in</p>
+        <a href="#" onClick="redirect()">Log In</a>
+        <a href="https://steemconnect.com/logout">Log Out</a>
+
+    </body>
+</html>
+
